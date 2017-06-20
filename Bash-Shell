@@ -1,0 +1,53 @@
+
+###  - Repetir um caractere várias vezes
+awk 'BEGIN {while (c++<100) printf "#"}'; echo
+echo '#'{1..20}
+echo '#'{1,,20}
+head -c 5000 /dev/zero|tr '\0' '*'
+
+###  - Colocar caractere na frente de algo
+echo "Leonardo Ortiz" | awk '{print "#"$0}'
+
+#atrás de algo
+awk '{print $0"#"}'
+
+### - Tirar espaço do final
+sed 's/ *$//g' 
+
+### - ignorar/remover linhas vazias
+sed '/^$/d' 
+
+### - Deixa somente a linha especificada
+sed ''1'!d' 
+
+### - Insere um + a cada 3 caracteres
+echo Leo123 | fold -w3 | paste -sd+ -
+
+
+### - Colocar 0000 na esquerda até fechar 6 caracteres
+sed -e :a -e 's/^.\{1,5\}$/0&/;ta' teste
+
+#Várias dicas SED
+http://sed.sourceforge.net/sed1line_pt-BR.html
+http://ideatrash.net/2011/01/bash-string-padding-with-sed.html
+
+#######################
+pad=$(printf '%0.1s' "-"{1..60})
+padlength=40
+string2='bbbbbbb'
+for string1 in a aa aaaa aaaaaaaa
+do
+     printf '%s' "$string1"
+     printf '%*.*s' 0 $((padlength - ${#string1} - ${#string2} )) "$pad"
+     printf '%s\n' "$string2"
+     string2=${string2:1}
+done
+
+#####
+“${nome_variavel:posição_inicial:comprimento}”
+
+160805
+year=$((2000+${line:19:2}))
+month=${line:21:2}
+day=${line:23:2}
+
