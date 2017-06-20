@@ -1,0 +1,40 @@
+#Pastas maiores
+Get-Mailbox -Identity leonardo.ortiz@marisolsa.com | Get-MailboxFolderStatistics -FolderScope All | Sort-Object FolderSize -Descending | Select-Object -First 10 | FT Identity,FolderSize,ItemsInFolder -wrap
+
+### - Permissão calendário -
+
+#-> Adiconar permissão
+Add-MailboxFolderPermission email@email.com:\Calendário -User user -AccessRights Editor
+#- Calendário pode ser Calendar (se o Win for inglês ou for mac)
+Opções:
+-> Author   CreateItems, DeleteOwnedItems, EditOwnedItems, FolderVisible, ReadItems
+-> Contributor   CreateItems, FolderVisible
+-> Editor   CreateItems, DeleteAllItems, DeleteOwnedItems, EditAllItems, EditOwnedItems, FolderVisible, ReadItems
+-> None   FolderVisible
+-> NonEditingAuthor   CreateItems, FolderVisible, ReadItems
+-> Owner   CreateItems, CreateSubfolders, DeleteAllItems, DeleteOwnedItems, EditAllItems, EditOwnedItems, FolderContact, FolderOwner, FolderVisible, ReadItems
+-> PublishingEditor   CreateItems, CreateSubfolders, DeleteAllItems, DeleteOwnedItems, EditAllItems, EditOwnedItems, FolderVisible, ReadItems
+-> PublishingAuthor   CreateItems, CreateSubfolders, DeleteOwnedItems, EditOwnedItems, FolderVisible, ReadItems
+-> Reviewer   FolderVisible, ReadItems
+
+#Ver permissão
+Get-MailboxFolderPermission -Identity email:\Calendário |fl
+
+###  - Conta compartilhada, cair os e-mails enviados "DE" nas duas caixas postais (DE E FROM) -
+
+#Pegar informação da caixa
+Get-MailboxSentItemsConfiguration suporte.ti@marisolsa.com
+
+#Configuração para que os itens caiam em ambas as caixas (Sender e From)
+Set-MailboxSentItemsConfiguration suporte.ti@marisolsa.com -SendAsItemsCopiedTo SenderAndFrom -SendOnBehalfOfItemsCopiedTo SenderAndFrom
+
+-> Sender
+-> SenderAndFrom
+
+###  - Remover paternship (quando da problema pelo GUI) -
+
+1) First, open the Exchange Management Shell
+2) Run the following cmdlet: Get-ActiveSyncDeviceStatistics -Mailbox emailaddress@yourdomain.com
+3) Find the device you want to remove, and copy paste the GUID
+4) Run the following cmdlet: Remove-ActiveSyncDevice -Id 0215da00-227e-4470-a498-e4a44615a223  (replace the guid with your GUID)
+
