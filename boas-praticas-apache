@@ -20,5 +20,11 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 SSLSessionTickets Off
 
 
+#Forçar SSL
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
 
 
