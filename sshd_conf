@@ -44,11 +44,12 @@ SyslogFacility AUTHPRIV
 # Authentication:
 #Liberar somente si118101
 AllowUsers si118101
-#LoginGraceTime 2m
+#30s pra digitar a senha
+LoginGraceTime 30s
 PermitRootLogin no
 #StrictModes yes
-MaxAuthTries 3
-#MaxSessions 10
+MaxAuthTries 2
+MaxSessions 3
 #Matar sessão dps de 5m
 ClientAliveInterval 300
 ClientAliveCountMax 0
@@ -119,8 +120,9 @@ X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
-#PrintMotd yes
-#PrintLastLog yes
+#mostar banner e ultimo login
+PrintMotd yes
+PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
 UsePrivilegeSeparation sandbox          # Default for new installations.
