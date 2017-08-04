@@ -1,0 +1,133 @@
+* TEM QUE SER CERTIFICADOS COM NOMES DIFERENTES
+##### - FAZER ISSO NO MASTER, COPIAR OS CERTIFICADOS VIA SCP PARA O SLAVE - #####
+#CERTIFICADO CA
+openssl genrsa 2048 > ca-key.pem
+## set CA common name to "MariaDB admin" ##
+openssl req -new -x509 -nodes -days 1825 -key ca-key.pem -out ca-cert.pem
+
+#CERIFICADO DO MASTER
+## set server certificate common name to "MariaDB server" ##
+openssl req -newkey rsa:2048 -days 1825 -nodes -keyout server-key.pem -out server-req.pem
+openssl rsa -in server-key.pem -out server-key.pem
+openssl x509 -req -in server-req.pem -days 1825 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem
+
+#CERTIFICADO DO SLAVE
+## set client common name to "MariaDB client" ##
+openssl req -newkey rsa:2048 -days 1825 -nodes -keyout client-key.pem -out client-req.pem
+openssl rsa -in client-key.pem -out client-key.pem
+openssl x509 -req -in client-req.pem -days 1825 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem
+openssl verify -CAfile ca-cert.pem server-cert.pem client-cert.pem
+
+############################################ - CONFIGURAÇÕES PARA O MASTER - ##########################################################
+-----------------------------------------------------------------------------------------------------
+#CONFIGURAÇÃO NO MY.CNF DO MASTER
+
+[mysqld]
+ssl
+ssl-ca=/CAMINHO/ca-cert.pem
+ssl-cert=/CAMINHO/server-cert.pem
+ssl-key=/CAMINHO/server-key.pem
+
+server_id=1
+bind-address = IP_DO_MASTER
+log-basename=master
+log_bin =  CAMINHO_DE_LOG/mariadb-bin
+log_bin_index = CAMINHO_DE_LOG/mariadb-bin.index
+binlog-format=row
+binlog-do-db=BASE_QUE_SERA_REPLICADO
+
+
+[client]
+ssl-ca=/CAMINHO/ca-cert.pem
+ssl-cert=/CAMINHO/client-cert.pem
+ssl-key=/CAMINHO/client-key.pem
+
+-----------------------------------------------------------------------------------------------------
+
+#COMANDOS DE VERIFICAÇÃO
+
+#VER CERIFICADOS
+show variables like '%ssl%';
+
+#VER STATUS e coletar informações para configurar o slave (POS e LOG)
+SHOW MASTER STATUS;
+SHOW BINARY LOGS;
+
+#CRIAR USUARIO NO MASTER
+GRANT REPLICATION SLAVE ON *.* TO 'UM_NOME_USUARIO'@'IP_DO_SLAVE' IDENTIFIED BY 'UMA_SENHA' REQUIRE SSL;
+FLUSH PRIVILEGES;
+
+#COLOCAR A BASE EM MODO READ ONLY PARA CRIAR O DUMP DO MYSQL
+FLUSH TABLES WITH READ LOCK;
+
+#FAZER DUMP DA BASE
+mysqldump --all-databases --add-drop-table --add-drop-database --user=root --password --master-data > DUMP_DO_MASTER.sql
+
+############################################ - CONFIGURAÇÕES PARA O SLAVE - ##########################################################
+
+#CONFIGURAÇÃO DENTRO DO MARIADB
+CHANGE MASTER TO MASTER_HOST='IP_DO_MASTER', 
+MASTER_USER='UM_NOME_USUARIO', 
+MASTER_PASSWORD='UMA_SENHA', 
+MASTER_LOG_FILE='ARQUIVO_DE_LOG_PEGO_NA_SAIDA_DOS_COMANDOS_DE_VERIFICACAO', 
+MASTER_LOG_POS='POS_PEGAR_NA_SAIDA_DO_COMANDO_DE_VERIFICACAO', 
+MASTER_SSL=1, 
+MASTER_SSL_CA ='CAMINHO/ca-cert.pem', 
+MASTER_SSL_CERT ='CAMINHO/client-cert.pem', 
+MASTER_SSL_KEY ='CAMINHO/client-key.pem', 
+MASTER_CONNECT_RETRY=10;
+FLUSH PRIVILEGES;
+-----------------------------------------------------------------------------------------------------
+### CONFIGURAÇÃO NO MY.CNF DO SLAVE
+[mysqld]
+ssl
+ssl-ca=/CAMINHO/ca-cert.pem
+ssl-cert=/CAMINHO/client-cert.pem
+ssl-key=/CAMINHO/client-key.pem
+
+server-id=2
+bind-address = IP_DO_SLAVE
+report-host = NOME_DO_HOST
+relay-log-index = /CAMINHO_DE_LOG/slave-relay-bin.index
+relay-log       = /CAMINHO_DE_LOG/slave-relay-bin
+log_bin = /CAMINHO_DE_LOG/mariadb-bin
+log_bin_index = /CAMINHO_DE_LOG/mariadb-bin.index
+replicate-do-db = BASE_QUE_SERA_REPLICADO
+
+[client]
+ssl
+ssl-ca=/CAMINHO/ca-cert.pem
+ssl-cert=/CAMINHO/client-cert.pem
+ssl-key=/CAMINHO/client-key.pem
+-----------------------------------------------------------------------------------------------------
+
+#VER STATUS DO SLAVE
+ show slave status \G
+-> DEVE FICAR COMO: Slave_IO_State: Waiting for master to send event
+
+### UMA BOA PRATICA É COLOCAR O SLAVE EM READ ONLY, QUALQUER ALTERAÇÃO NA BASE DO SLAVE BUGA A REPLICATION
+# COLOCAR EM MODO READ-ONLY
+FLUSH TABLES WITH READ LOCK;
+SET GLOBAL read_only = ON;
+
+# REMOVER DO MODO READ-ONLY
+SET GLOBAL read_only = 0;
+UNLOCK TABLES;
+
+#IMPORTANTE
+-> OS CERTIFICADOS DEVEM TER PERMISSÃO PARA O MYSQLD
+chown mysql CERTIFICADOS
+chmod 600 CERTIFICADOS
+
+#DEPOS DE TODA A CONFIG DO SLAVE, TIRAR O MASTER DO RDY ONLY
+UNLOCK TABLES;
+
+#USAR O TCPDUMP PARA VERIFICAR SE ESTÁ SINCRONIZANDO CRIPTOGRADO
+
+
+#REFERENCIAS
+https://www.howtoforge.com/how-to-set-up-mysql-database-replication-with-ssl-encryption-on-centos-5.4
+https://llawlor.github.io/2016/03/14/mysql-ssl-replication.html
+https://www.linuxbabe.com/mariadb/setup-mariadb-master-slave-replication-debian-8
+https://www.unixmen.com/setup-mariadb-master-slave-replication-in-centos-7/
+https://devops.profitbricks.com/tutorials/configure-database-replication-with-mariadb-on-ubuntu/
