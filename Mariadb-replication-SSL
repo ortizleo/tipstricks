@@ -101,6 +101,10 @@ ssl-cert=/CAMINHO/client-cert.pem
 ssl-key=/CAMINHO/client-key.pem
 -----------------------------------------------------------------------------------------------------
 
+#INICIAR SLAVE
+START SLAVE
+
+
 #VER STATUS DO SLAVE
  show slave status \G
 -> DEVE FICAR COMO: Slave_IO_State: Waiting for master to send event
@@ -122,8 +126,12 @@ chmod 600 CERTIFICADOS
 #DEPOS DE TODA A CONFIG DO SLAVE, TIRAR O MASTER DO RDY ONLY
 UNLOCK TABLES;
 
-#USAR O TCPDUMP PARA VERIFICAR SE ESTÁ SINCRONIZANDO CRIPTOGRADO
 
+#USAR O TCPDUMP PARA VERIFICAR SE ESTÁ SINCRONIZANDO CRIPTOGRADO
+#PARA RESETAR TUDO, EXECUTAR
+STOP SLAVE;
+RESET SLAVE; 
+RESET SLAVE ALL;
 
 #REFERENCIAS
 https://www.howtoforge.com/how-to-set-up-mysql-database-replication-with-ssl-encryption-on-centos-5.4
@@ -131,3 +139,4 @@ https://llawlor.github.io/2016/03/14/mysql-ssl-replication.html
 https://www.linuxbabe.com/mariadb/setup-mariadb-master-slave-replication-debian-8
 https://www.unixmen.com/setup-mariadb-master-slave-replication-in-centos-7/
 https://devops.profitbricks.com/tutorials/configure-database-replication-with-mariadb-on-ubuntu/
+https://dba.stackexchange.com/questions/21119/how-do-i-completely-disable-mysql-replication
