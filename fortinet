@@ -1,0 +1,3 @@
+#How to get Fortigate interface statistics such as errors/discards
+-> Log in through CLI, and run ” fnsysctl <command>” for example “fnsysctl ls”.
+https://travelingpacket.com/2014/10/09/how-fortinet-interface-statistics-such-as-errorsdiscards/
