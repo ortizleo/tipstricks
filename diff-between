@@ -1,2 +1,6 @@
 #Differences between Power Systems and x86 environments
 https://www.ibm.com/support/knowledgecenter/en/linuxonibm/liabd/x86_differences_ivm.htm
+
+
+#Log Management: Graylog Vs ELK
+https://medium.com/jetruby/log-management-graylog-vs-elk-fc93428e0f66
