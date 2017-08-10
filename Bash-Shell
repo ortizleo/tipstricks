@@ -51,3 +51,7 @@ year=$((2000+${line:19:2}))
 month=${line:21:2}
 day=${line:23:2}
 
+#Limpar history
+#https://unix.stackexchange.com/questions/203290/how-do-i-clear-the-terminal-history
+cat /dev/null > ~/.bash_history && history -c && exit
+
