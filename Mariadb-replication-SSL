@@ -133,6 +133,20 @@ STOP SLAVE;
 RESET SLAVE; 
 RESET SLAVE ALL;
 
+
+#RESETAR REPLICAÇÃO
+https://stackoverflow.com/questions/2366018/how-to-re-sync-the-mysql-db-if-master-and-slave-have-different-database-incase-o
+1- STOP SLAVE
+2- RESET SLAVE ALL
+3- DUMP NO MASTER
+4- JOGAR O DUMP NO SLAVE
+5- PEGAR POSTION E ARQUIVO DE LOG NO MASTER
+6- CHANGE MASTER TO MASTER_HOST=......
+7- START SLAVE
+
+
+
+
 #REFERENCIAS
 https://www.howtoforge.com/how-to-set-up-mysql-database-replication-with-ssl-encryption-on-centos-5.4
 https://llawlor.github.io/2016/03/14/mysql-ssl-replication.html
