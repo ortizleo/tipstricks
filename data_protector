@@ -1,0 +1,40 @@
+#COMANDOS
+omnimm -media_info Medium 
+omnimm -list_media MEDIA_ID -detail
+omnimlist -device NOME_DO_DEVICE -slot NUMERO_DO_SLOT
+
+
+
+
+
+
+
+
+
+
+
+
+#Restoring the IDB Without IDB Recovery File
+http://helpfiles.intactcloud.com/DP/8.00/uiolh/OmniBack_Database/Task/HOW_Restoring_the_OBDB_Without_OBDB_Recovery_File.htm
+http://helpfiles.intactcloud.com/DP/8.00/uiolh/OmniBack_Database/Task/HOW_Restoring_the_OBDB_with_OBDB_Recovery_File_and_Changed_Device.htm
+
+#Is if possible to restore data from tape directly via Data Protector
+https://community.saas.hpe.com/t5/Data-Protector-Practitioners/Is-if-possible-to-restore-data-from-tape-directly-via-Data/td-p/302907
+
+
+
+
+#how to list content of tape an restore it?
+https://community.saas.hpe.com/t5/Data-Protector-Practitioners/how-to-list-content-of-tape-an-restore-it/td-p/474327
+1- Scan the tape,D P marked it as "unknown"
+2- Import the tape
+3- After import, D.P. recognizes it as "D P media" and display info about backup session(date,time,etc).
+4-After this, in Restore objects -> list from media to see if data were there.
+5-Restore from the tape.
+
+
+
+
+
+
+
