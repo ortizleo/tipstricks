@@ -144,7 +144,9 @@ https://stackoverflow.com/questions/2366018/how-to-re-sync-the-mysql-db-if-maste
 6- CHANGE MASTER TO MASTER_HOST=......
 7- START SLAVE
 
-
+#USUÀRIO PARA MONITORAR O SLAVE
+https://dba.stackexchange.com/questions/36299/permissions-for-a-mysql-user-which-will-monitor-replication-status
+GRANT REPLICATION CLIENT ON *.* to user@host;
 
 
 #REFERENCIAS
