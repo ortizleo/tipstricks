@@ -1,0 +1,13 @@
+#Sobre as opções para o virtual host
+https://serverfault.com/questions/567320/difference-between-default-and-in-virtualhost-context
+
+
+<Virtualhost *:80> with ServerName foo.com means "on all IPs managed on this host", "on port 80", "if the request host header is foo.com" I'll use this virtualhost
+<Virtualhost *:*> with Servername foo.com means "on all IPs managed on this host", "on all ports", "if the request host header is foo.com" I'll use this virtualhost
+<Virtualhost 10.0.0.2:*> with Servername foo.com means "for request incoming from my network interface 10.0.0.2", "on all ports", "if the request host header is foo.com" I'll use this virtualhost
+<Virtualhost _default_:*> with Servername foo.com : should not be used with name based virtualhosting
+And on an IP based Virtualhosting:
+
+<Virtualhost 10.0.0.2:*> means "I'll use this virtualhost for request coming on my 10.0.0.2 interface"
+<Virtualhost _default_:443> means "I'll use this virtualhost for all other network interface on my host for request coming on port 443"
+<Virtualhost _default_:*> means "I'll use this virtualhost for all other network interface on my host, if it is not matched by a previous rule, and if the request host header is not matched by a named based virtualhost"
