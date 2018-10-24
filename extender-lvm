@@ -1,0 +1,67 @@
+Procedimento para aumentar espaço em disco de uma VM Linux com LVM
+
+#Se ja tiver 4 partições primarias, adicionar um novo disco no VM, se não pode só expadir o disco
+
+#Se aumetar o espaço do HD
+echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/rescan
+#Verificar pois pode ser outro scsi device, dar um ls no dir
+
+#Se colocar mais um disco
+echo "- - -" > /sys/class/scsi_host/host0/scan
+
+#checar se aumentou o espaço e
+#fdisk na partição
+fdisk /dev/sda
+n
+p (se primario)
+definir as alocações
+t
+escolher a partição
+8e (lvm)
+w (salvar)
+
+#verificar se criou OK a partção com um 
+fdisk -l
+
+#se não aparecer a partição, executar o partprobe ou partx
+partprobe -s
+partx -v -a /dev/sda
+
+#criar um physical volume com a particao nova
+pvcreate /dev/sda3
+
+#ver o nome do volume goup para extender
+vgdisplay
+
+#adicionar o novo pv no volume group
+vgextend centos_templatecentos7 /dev/sda3
+
+#verificar se o disco foi adicionado corretamente e checar o espaço livre
+pvscan
+(ver os free)
+
+#aumentar o espaço do logical volume
+lvextend /dev/mapper/centos_templatecentos7-root /dev/sda3
+
+#resize na partição, se for ext
+resize2fs resize2fs /dev/VolGroup00/LogVol00
+
+#se for XFS
+xfs_growfs /dev/mapper/centos_templatecentos7-root
+
+#checar se aumentou o espaço OK
+df / fdisk 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
