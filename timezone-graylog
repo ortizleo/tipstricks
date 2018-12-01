@@ -1,0 +1,4 @@
+lista de timezones: https://www.joda.org/joda-time/timezones.html
+
+O timezone do Server é do server (não do root que está no server.conf, esse é só do usuário admin).
+Quando trocar o timezone, reiniciar o elasticsearch e em seguida o graylog-server.
