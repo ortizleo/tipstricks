@@ -1,0 +1,6 @@
+
+#dica pra tentar tratar slow queries, editar o my.cnf
+optimizer_switch = 'index_condition_pushdown=off'
+Fonte: https://www.zabbix.com/forum/zabbix-for-large-environments/50961-slow-query-problem-in-zabbix-3-2-6
+
+Usado quando atualizei do 3.4 para o 4.0, resolvendo o problema.
