@@ -1,0 +1,35 @@
+#No named.conf
+
+em options {
+
+        dnssec-enable yes;
+        dnssec-validation yes;
+        dnssec-lookaside auto;
+        key-directory "/var/named/keys_dnssec";
+        /* Path to ISC DLV key */
+        bindkeys-file "/etc/named.iscdlv.key";
+        managed-keys-directory "/var/named/dynamic";
+}
+
+
+na zone "....." IN {
+                type master;
+                file "....";
+                allow-transfer {localhost;};
+                auto-dnssec maintain;
+                inline-signing yes;
+        };
+
+
+
+#comandos
+dnssec-keygen -a RSASHA512 -b 2048 -3 -f KSK -r /dev/urandom -n ZONE marisolonline.com.br
+dnssec-keygen -a RSASHA512 -b 2048 -3 -r /dev/urandom -n ZONE marisolonline.com.br
+rndc loadkeys marisolonline.com.br
+rndc signing -nsec3param 1 1 100 $(head -c 512 /dev/urandom | sha1sum | cut -b 1-16) marisolonline.com.br
+dnssec-dsfromkey ARQUIVO_KSK
+
+#Checar
+dig ...... +dnssec
+dig ...... nsec3param +noadditional +noauthority
+
