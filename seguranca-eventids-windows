@@ -1,0 +1,16 @@
+###### 
+4724 - RESET DE SENHAS  (POR TERCEIROS)
+4723 - ALTERAÇÂO DE SENHAS (PELO USUÀRIO)
+4722 - Usuários ativados
+4725 - Usuários desativados
+4720 - Usuários criados
+4726 - Usuários deletados
+4762 - User removido de grupo
+4728 - User adicionado em grupo
+4771 - Login errado
+4768 - Login OK (KERBEROS)
+4776 - Login NTLM
+4767 - Contas desbloqueadas
+4740 - Contas bloqueadas
+EventID:631 OR EventID:635 OR EventID:658 OR EventID:4727 OR EventID:4731 OR EventID:4754 - CRIAÇÃO DE GRUPOS
+EventID:634 OR EventID:638 OR EventID:662 OR EventID:4730 OR EventID:4734 OR EventID:4758 - DELEÇÃO DE GRUPOS
