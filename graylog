@@ -1,0 +1,3 @@
+#quando da pau de espaço em disco e esse erro
+#WARN  [Messages] Failed to index message: index=<index_ad_8> id=<9bc93e91-5c7f-11e9-8fc0-005056b2c421> error=<{"type":"cluster_block_exception","reason":"blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];"}>
+curl -XPUT -H "Content-Type: application/json" https://127.0.0.1:9200/_all/_settings -d '{"index.blocks.read_only_allow_delete": null}'
