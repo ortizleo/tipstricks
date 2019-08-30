@@ -1,2 +1,10 @@
 #Relabeling
 https://www.centos.org/docs/5/html/5.2/Deployment_Guide/sec-sel-fsrelabel.html
+
+
+
+setsebool -P httpd_can_network_connect_db 1
+
+tmpfs           /mysqltmpfs         tmpfs  rw,uid=mysql,gid=mysql,size=1g,nr_inodes=10k,mode=0775 0 0
+semanage fcontext -a -t mysqld_db_t "/mysqltmpfs(/.*)?"
+restorecon -Rv /mysqltmpfs
