@@ -1,0 +1,1 @@
+Get-ADUser -Filter {(enabled -eq $true) -and (department -like "*presi*")} -Properties Department | select Name,Department,UserPrincipalName
