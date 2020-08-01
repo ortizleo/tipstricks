@@ -3,5 +3,15 @@
 Get-ADUser -Filter {(enabled -eq $true) -and (department -like "*presi*")} -Properties Department | select Name,Department,UserPrincipalName
 
 #quantidade de usuários em grupo
-$ADInfo = Get-ADGroup -Identity 'FGT-VPN-USERS' -Properties Members
+$ADInfo = Get-ADGroup -Identity 'GRUPO' -Properties Members
 $AdInfo.Members.Count
+
+
+
+
+#Add users from a csv - From: https://www.petenetlive.com/KB/Article/0001475
+Import-Module ActiveDirectory 
+Import-Csv -Path “C:\Temp\Users-To-Add.csv” | ForEach-Object {Add-ADGroupMember -Identity “Group-Name” -Members $_.’User-Name’}
+
+#Remove users from a csv - From: https://www.petenetlive.com/KB/Article/0001475
+Import-Csv -Path “C:\Temp\Users-To-Remove.csv” | ForEach-Object {Remove-ADGroupMember -Identity “Group-Name” -Members $_.’User-Name’ -Confirm:$false}
