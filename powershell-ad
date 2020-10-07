@@ -16,7 +16,8 @@ Import-Csv -Path “C:\Temp\Users-To-Add.csv” | ForEach-Object {Add-ADGroupMem
 #Remove users from a csv - From: https://www.petenetlive.com/KB/Article/0001475
 Import-Csv -Path “C:\Temp\Users-To-Remove.csv” | ForEach-Object {Remove-ADGroupMember -Identity “Group-Name” -Members $_.’User-Name’ -Confirm:$false}
 
-
+#Exportar Users de um grupo
+Get-ADGroup “GRUPO” -Properties Member | Select-Object -Expand Member | Get-ADUser -Property Name, DisplayName,employeeID | Export-csv -path .\fgt4.csv
 
 https://activedirectorypro.com/powershell-export-active-directory-group-members/
 
