@@ -55,3 +55,12 @@ day=${line:23:2}
 #https://unix.stackexchange.com/questions/203290/how-do-i-clear-the-terminal-history
 cat /dev/null > ~/.bash_history && history -c && exit
 
+
+
+
+Clear all non-ASCII characters of file.txt:
+
+$ iconv -c -f utf-8 -t ascii file.txt
+$ strings file.txt
+
+
