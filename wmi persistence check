@@ -1,0 +1,5 @@
+Get-WMIObject -Namespace rootSubscription -Class __EventFilter
+
+Get-WMIObject -Namespace rootSubscription -Class __EventConsumer
+
+Get-WMIObject -Namespace rootSubscription -Class __FilterToConsumerBinding
