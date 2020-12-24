@@ -61,7 +61,7 @@ SSH(){
 #tcp wrappers com envio de e-mail
 #necessario pacote mailx
 echo "sshd : CONFIGURAR IP.*" >> /etc/hosts.allow
-echo "sshd : ALL : spawn /bin/echo "$(hostname) - SSH - Acesso DENY - Client %h" |mailx -s "$(hostname) - SSH - Acesso DENY - Client %h" leonardo.ortiz@marisolsa.com" >> /etc/hosts.deny
+echo "sshd : ALL : spawn /bin/echo "$(hostname) - SSH - Acesso DENY - Client %h" |mailx -s "$(hostname) - SSH - Acesso DENY - Client %h" leonardo.ortiz@meimail.com" >> /etc/hosts.deny
 
 }
 
