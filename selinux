@@ -8,3 +8,9 @@ setsebool -P httpd_can_network_connect_db 1
 tmpfs           /mysqltmpfs         tmpfs  rw,uid=mysql,gid=mysql,size=1g,nr_inodes=10k,mode=0775 0 0
 semanage fcontext -a -t mysqld_db_t "/mysqltmpfs(/.*)?"
 restorecon -Rv /mysqltmpfs
+
+
+
+
+sudo chcon -t httpd_sys_content_t phpipam –R
+
