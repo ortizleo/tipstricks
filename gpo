@@ -1,0 +1,3 @@
+Set this reg value and the computer will show exactly what GPO it is stuck working on, rather than just saying "please wait":
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]"VerboseStatus"=dword:00000001
