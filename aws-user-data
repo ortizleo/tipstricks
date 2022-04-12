@@ -1,0 +1,3 @@
+#cloud-boothook
+#!/bin/bash
+Sempre colocar as infos acima no User Data de um EC2 quando precisar usa-lo.
